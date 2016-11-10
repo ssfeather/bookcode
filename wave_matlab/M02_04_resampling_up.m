@@ -14,6 +14,7 @@ n=0:N0-1;t=n/Fs0;
 zeta=Fs1/(2*f0)  % 重采样的低通滤波器参数
 zeta=1
 xn0=sin(2*pi*0.1*t)+0.5*sin(2*pi*30*t);
+
 %xn0=sin(2*pi*0.1*t);
 figure(1);
 Nf=100; 
@@ -23,7 +24,7 @@ for m=floor(Nf/ratio)+Nf+1:N1-floor(Nf/ratio)-1
     x(m)=0;
     for n=floor(m*ratio)-Nf:1:floor(m*ratio)+Nf
         x(m)=x(m)+xn0(n)*sinc(zeta*(m*ratio-n));
-           end
+    end
 end
  n1=0:N1-1;tt1=n1/Fs1;
  nn1=length(n1)

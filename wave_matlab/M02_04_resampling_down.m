@@ -16,6 +16,7 @@ n1=0:N1-1;t1=n1/Fs1;
 xn0=sin(2*pi*1*t)+0.5*sin(2*pi*30*t);
 xn1=sin(2*pi*1*t1)+0.5*sin(2*pi*30*t1);
 %xn0=sin(2*pi*0.1*t);
+
 figure(1);
 Nf=100; 
 plot(t(1+1:N0-Nf),xn0(1+Nf:N0-1),'r');hold on
@@ -25,7 +26,7 @@ for m=floor(Nf/ratio)+Nf+1:N1-floor(Nf/ratio)-1
     x(m)=0;
     for n=floor(m*ratio)-Nf:1:floor(m*ratio)+Nf
         x(m)=x(m)+zeta*xn0(n)*sinc(zeta*(m*ratio-n));
-           end
+    end
 end
 
 xl=length(x)
@@ -39,6 +40,7 @@ n1=0:N1-1;tt1=n1/Fs1;
  %蓝线是向下重采样的结果.在重采样的同时已实现了低通滤波
 %plot(tt1(floor(Nf/ratio)+Nf+1-Fs1+1:N1-floor(Nf/ratio)-1-Fs1+1),x(floor(Nf/ratio)+Nf+1:N1-floor(Nf/ratio)-1)*zeta,'b');hold on
   plot(tt1(floor(Nf/ratio)+Nf+1-Fs1+1:N1-floor(Nf/ratio)-1-Fs1+1),x(floor(Nf/ratio)+Nf+1:N1-floor(Nf/ratio)-1),'b');hold on
+  
  ty=0:0.001:4096*t0-Nf/Fs0;
  z=sin(2*pi*1*(ty+Nf/Fs0-0.01))+0.5*sin(2*pi*30*(ty+Nf/Fs0-0.01));
  %z=sin(2*pi*0.1*(ty+Nf/Fs0))

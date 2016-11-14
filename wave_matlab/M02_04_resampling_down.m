@@ -1,4 +1,4 @@
-%向下重采样
+%%向下重采样
 clear all
 t0=0.01;%原采样间隔
 Fs0=1/t0;
@@ -58,8 +58,8 @@ fz=n/(32768*0.001);
 subplot(4,1,2);
 plot(fz,2*zfft/32768);title('(b)   1000sps采样的频谱');
 subplot(4,1,4)
-Nx=length(x)
-xfft=abs(fft(x));
+Nx=length(x);
+xfft=abs(fft(x));  
 n=0:1:Nx-1;
 fx=n*Fs1/Nx;
 plot(fx,2*xfft/Nx);

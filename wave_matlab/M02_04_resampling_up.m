@@ -10,21 +10,26 @@ odatLength=4096;                                    %原数据点数
 ndatLength=floor(odatLength*orgInterval/newInterval);%新数据点数
 
 %生成0.01Hz和30Hz的混合信号
+%--------------------------------------------------------------------------
+%为什么要产生一个斜线序列n，为什么n要除以原始采样率？
 n=0:odatLength-1;
 t=n/orgFs;
 xn0=sin(2*pi*0.1*t)+0.5*sin(2*pi*30*t);
+%--------------------------------------------------------------------------
 
+%--------------------------------------------------------------------------
+%滤波器参数为什么是1？
 zeta=newFs/(2*orgCutFre);                           %重采样的低通滤波器参数
 zeta=1;
+%--------------------------------------------------------------------------
 
 Nf=100; 
 figure(2)
 plot(t(1:odatLength-Nf),xn0(1+Nf:odatLength),'r');
-%{
 hold on
 plot(t(1:odatLength-Nf),xn0(1+Nf:odatLength),'r*');
 hold on
-%}
+
 for m=floor(Nf/newOldRatio)+Nf+1:ndatLength-floor(Nf/newOldRatio)-1
     x(m)=0;
     for n=floor(m*newOldRatio)-Nf:1:floor(m*newOldRatio)+Nf

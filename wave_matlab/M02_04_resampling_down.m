@@ -17,7 +17,7 @@ xn0=sin(2*pi*1*t)+0.5*sin(2*pi*30*t);
 xn1=sin(2*pi*1*t1)+0.5*sin(2*pi*30*t1);
 %xn0=sin(2*pi*0.1*t);
 
-figure(1);
+figure;
 Nf=100; 
 plot(t(1+1:N0-Nf),xn0(1+Nf:N0-1),'r');hold on
 % 重采样+低通滤波
@@ -48,7 +48,7 @@ n1=0:N1-1;tt1=n1/Fs1;
 xn0fft=abs(fft(xn0,N0));
 n=0:1:(N0-1);
 f=n*Fs0/N0;
-figure(3);
+figure;
 subplot(4,1,1);
 plot(f,xn0fft*2/N0);
 title('(a)   100sps采样的频谱')
@@ -70,7 +70,7 @@ xn1fft=abs(fft(xn1));
 fxn1=n1*Fs1/N1;
 plot(fxn1,xn1fft*2/Nx);
 title('(c)    50sps采样未滤波频谱');
-figure(4);
+figure;
 %用样条函数（spline)模拟信号恢复
 %Dt=0.00005;t=-0.005:Dt:0.005;
 subplot(2,1,1)

@@ -9,7 +9,7 @@ newFs=1/newInterval;                                %新采样率
 newOldRatio=newInterval/orgInterval;                %新采样间隔/原采样间隔
 orgLength=4096;                                     %原数据点数
 newLength=floor(orgLength*orgInterval/newInterval); %新数据长度
-zeta=newFs/(2*orgCutFre);                           %重采样的低通滤波器参数
+zeta=newFs/(2*orgCutFre);                           %重采样的低通滤波器参数 zeta=newFs/orgFs
 n=0:orgLength-1;
 t=n/orgFs;
 xn0=sin(2*pi*1*t)+0.5*sin(2*pi*30*t);               %1和30Hz混合信号
@@ -17,10 +17,11 @@ xn0=sin(2*pi*1*t)+0.5*sin(2*pi*30*t);               %1和30Hz混合信号
 %n1=0:newLength-1;
 %newInterval=n1/newFs;
 %--------------------------------------------------------------------------
+%% Nf是什么？为什么做二层循环
 Nf=100; 
 starPoint = floor(Nf/newOldRatio)+Nf+1;
 endPoint  = newLength-floor(Nf/newOldRatio)-1;
-x = zeros(starPoint,endPoint);
+x = zeros(1,endPoint);
 % 在信号处理领域，Sinc滤波器一个全部除去给定带宽之上的信号分量而只保留低频信号的理想电子滤波器。
 % 在频域它的形状象一个矩形函数，在时域它的形状象一个Sinc函数。由于理想的Sinc滤波器（矩形滤波器）
 % 有无限的延迟，所以现实世界中的滤波器只能是它的一个近似
@@ -39,26 +40,29 @@ tt1=n1/newFs;
 %nn1=length(n1);
 %ntt1=length(tt1);
 %nx=length(x);
+
+
+%% 为什么100采样（nx0100）和50采样（xn050）的方法不一样
+figure;
+
 ty=0:0.001:orgLength*orgInterval-Nf/orgFs;
 z=sin(2*pi*1*(ty+Nf/orgFs-0.01))+0.5*sin(2*pi*30*(ty+Nf/orgFs-0.01));
-
-figure;
-%subplot(2,1,1)
 plot(ty,z,'g')
 hold on
-%红线是向下重采样的结果.在重采样的同时已实现了低通滤波
+%红线是向下重采样的结果.
 t100 = t(1+1:orgLength-Nf);
 xn0100 = xn0(1+Nf:orgLength-1);
 plot(t100,xn0100,'r');
 hold on
 %蓝线是向下重采样的结果.在重采样的同时已实现了低通滤波
-tt150 = tt1(floor(Nf/newOldRatio)+Nf+1-newFs+1:newLength-floor(Nf/newOldRatio)-1-newFs+1);
-x50 = x(floor(Nf/newOldRatio)+Nf+1:newLength-floor(Nf/newOldRatio)-1);
-plot(tt150,x50,'b');
+t150 = tt1(floor(Nf/newOldRatio)+Nf+1-newFs+1:newLength-floor(Nf/newOldRatio)-1-newFs+1);
+xn050 = x(floor(Nf/newOldRatio)+Nf+1:newLength-floor(Nf/newOldRatio)-1);
+plot(t150,xn050,'b');
 xlabel('时间/s')
 
 %--------------------------------------------------------------------------
 
+%%
 n=0:1:(orgLength-1);
 f=n*orgFs/orgLength;
 xn0fft=abs(fft(xn0,orgLength));
@@ -90,6 +94,7 @@ title('(c) 50sps采样未滤波频谱');
 
 %--------------------------------------------------------------------------
 
+%%
 figure;
 %用样条函数（spline)模拟信号恢复
 %Dt=0.00005;t=-0.005:Dt:0.005;

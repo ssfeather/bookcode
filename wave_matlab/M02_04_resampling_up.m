@@ -22,6 +22,8 @@ plot(t100(1:orgDatLen-orgFs-orgFs),mixSig(1+orgFs:orgDatLen-orgFs),'r-*');
 hold on
 
 %--使用内差法从采样100的数据，向上重采样为500采样率数据-----------------------------
+% Sinc滤波器一个全部除去给定带宽之上的信号分量而只保留低频信号的理想电子滤波器。
+% 理想的Sinc滤波器（矩形滤波器）,有无限的延迟，现实世界中的滤波器只能是它的一个近似。
 comSta = orgFs+newFs+1;
 comEnd = newDatLen-newFs-1;
 difDat = zeros(1,comEnd);                     %初始化采样序列

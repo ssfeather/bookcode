@@ -5,31 +5,28 @@ Fs0=1/t0;                                       %原始采样率
 f0=Fs0/2;                                       %原截止频率=1/2采样率
 t1=0.02;                                        %新采样间隔
 Fs1=1/t1;                                       %新采样率
+zeta=Fs1/(2*f0);                                %重采样的低通滤波器参数
 ratio=t1/t0;                                    %新采样间隔/原采样间隔
 N0=4096;                                        %原数据点数
 N1=floor(N0*t0/t1);                             %新数据长度
 n=0:N0-1;
 t=n/Fs0;
-zeta=Fs1/(2*f0);                                %重采样的低通滤波器参数
 n1=0:N1-1;
 t1=n1/Fs1;
-xn0=sin(2*pi*1*t)+0.5*sin(2*pi*30*t);           %采样间隔为0.01的1和30Hz混合信号
-xn1=sin(2*pi*1*t1)+0.5*sin(2*pi*30*t1);         %???采样间隔为0.02的1和30Hz混合信号???
 %--------------------------------------------------------------------------
 %%
-Nf=100;                 %???Nf是什么？是采样率???
-x = zeros(1,N1-floor(Nf/ratio)-1);
+xn0=sin(2*pi*1*t)+0.5*sin(2*pi*30*t);           %采样间隔为0.01的1和30Hz混合信号
+%???采样间隔为0.02的1和30Hz混合信号???
+xn1=sin(2*pi*1*t1)+0.5*sin(2*pi*30*t1);
+%???Nf是什么？是采样率???
+Nf=100;
+x = zeros(1,N1-floor(Nf/ratio)-1);              %初始化采样序列
 for m=floor(Nf/ratio)+Nf+1:N1-floor(Nf/ratio)-1
     for n=floor(m*ratio)-Nf:1:floor(m*ratio)+Nf
         x(m)=x(m)+zeta*xn0(n)*sinc(zeta*(m*ratio-n));
     end
 end
 
-n1=0:N1-1;
-tt1=n1/Fs1;
-nn1=length(n1);
-ntt1=length(tt1);
-nx=length(x);
 %--------------------------------------------------------------------------
 %%
 figure;
@@ -45,7 +42,7 @@ hold on
 %？？？乘以zeta的是什么波形？？？
 %plot(tt1(floor(Nf/ratio)+Nf+1-Fs1+1:N1-floor(Nf/ratio)-1-Fs1+1),x(floor(Nf/ratio)+Nf+1:N1-floor(Nf/ratio)-1)*zeta,'b');
 %hold on
-plot(tt1(floor(Nf/ratio)+Nf+1-Fs1+1:N1-floor(Nf/ratio)-1-Fs1+1),x(floor(Nf/ratio)+Nf+1:N1-floor(Nf/ratio)-1),'b');
+plot(t1(floor(Nf/ratio)+Nf+1-Fs1+1:N1-floor(Nf/ratio)-1-Fs1+1),x(floor(Nf/ratio)+Nf+1:N1-floor(Nf/ratio)-1),'b');
 xlabel('时间/s')
 %--------------------------------------------------------------------------
 %%

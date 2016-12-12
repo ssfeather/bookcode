@@ -1,5 +1,5 @@
 %向上重采样（由100sps增到500sps）
-clear all
+clearvars
 orgInv    = 0.01;                             %原采样间隔（每秒100点） 
 newInv    = 0.002;                            %新采样间隔（每秒500点）
 orgDatLen = 4096;                             %原数据点数
@@ -26,7 +26,7 @@ hold on
 % 理想的Sinc滤波器（矩形滤波器）,有无限的延迟，现实世界中的滤波器只能是它的一个近似。
 comSta = orgFs+newFs+1;
 comEnd = newDatLen-newFs-1;
-difDat = zeros(1,comEnd);                     %初始化采样序列
+difDat = zeros(1,comEnd);                     %初始化重采样序列
 for m=comSta:comEnd
     for n=floor(m*ratio)-orgFs:floor(m*ratio)+orgFs
         %???书中公式没有用到滤波器参数（zeta）???

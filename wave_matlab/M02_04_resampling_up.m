@@ -14,11 +14,12 @@ zeta = newFs/(2*orgCutFre);                   %重采样的低通滤波器参数
 zeta = 1;
 
 figure
+
 %--生成0.1Hz和30Hz的混合信号（30Hz信号振幅是0.1Hz信号振幅的1/2）,采用率为100---------
-n=0:orgDatLen-1;
-t100=n/orgFs;
-mixSig=sin(2*pi*0.1*t100)+0.5*sin(2*pi*30*t100);    
-plot(t100(1:orgDatLen-orgFs-orgFs),mixSig(1+orgFs:orgDatLen-orgFs),'r-*');
+t100=(0:orgDatLen-1)/orgFs;
+%t100=0:0.01:(orgDatLen-1);
+mix100=sin(2*pi*0.1*t100)+0.5*sin(2*pi*30*t100);    
+plot(t100(1:orgDatLen-orgFs-orgFs),mix100(1+orgFs:orgDatLen-orgFs),'r-*');
 hold on
 
 %--使用内差法从采样100的数据，向上重采样为500采样率数据-----------------------------
@@ -30,7 +31,7 @@ difDat = zeros(1,comEnd);                     %初始化重采样序列
 for m=comSta:comEnd
     for n=floor(m*ratio)-orgFs:floor(m*ratio)+orgFs
         %???书中公式没有用到滤波器参数（zeta）???
-        difDat(m)=difDat(m)+mixSig(n)*sinc(zeta*(m*ratio-n));
+        difDat(m)=difDat(m)+mix100(n)*sinc(zeta*(m*ratio-n));
     end
 end
 
@@ -40,8 +41,9 @@ hold on
 
 %--生成0.1Hz和30Hz的混合信号（30Hz信号振幅是0.1Hz信号振幅的1/2）,采用率为1000--------
 t1000=0:0.001:4000*orgInv-1;
-mixTmp=sin(2*pi*0.1*(t1000+1))+0.5*sin(2*pi*30*(t1000+1));
-plot(t1000,mixTmp,'g')
+mix1000=sin(2*pi*0.1*(t1000+1))+0.5*sin(2*pi*30*(t1000+1));
+plot(t1000,mix1000,'g')
+hold on
 
 title('信号恢复示例')
 xlabel('时间/s')

@@ -6,7 +6,7 @@
 % x(t)=3*sin(2*pi*t)+1.5*sin(2*pi*5*t)+2
 %dt=0.01s,N=1024,t=dt*(1:N)
 clearvars
-dt=0.02
+dt=0.02;
 %N=1024
 %N=4096
 %N=128

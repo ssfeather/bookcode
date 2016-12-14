@@ -1,11 +1,11 @@
-%M02_06_fft_abs.m¼ÆËãÊ±¼äĞòÁĞµÄDFT¾ø¶ÔÖµ¡¢
-%°´Ê±¼ä´°¹éÒ»»¯µÄ¸µÀïÒ¶Æ×Õñ·ù¾ø¶ÔÖµ¡¢
-%¸µÀïÒ¶Õñ·ùÆ×ÃÜ¶È¾ø¶ÔÖµ
-%¸µÀïÒ¶Æ×µÄÕæÕñ·ù
-% µÚÒ»ÀàĞÅºÅ£º³ÖĞøµÄÖÜÆÚĞÅºÅ
+%M02_06_fft_abs.mè®¡ç®—æ—¶é—´åºåˆ—çš„DFTç»å¯¹å€¼ã€
+%æŒ‰æ—¶é—´çª—å½’ä¸€åŒ–çš„å‚…é‡Œå¶è°±æŒ¯å¹…ç»å¯¹å€¼ã€
+%å‚…é‡Œå¶æŒ¯å¹…è°±å¯†åº¦ç»å¯¹å€¼
+%å‚…é‡Œå¶è°±çš„çœŸæŒ¯å¹…
+% ç¬¬ä¸€ç±»ä¿¡å·ï¼šæŒç»­çš„å‘¨æœŸä¿¡å·
 % x(t)=3*sin(2*pi*t)+1.5*sin(2*pi*5*t)+2
 %dt=0.01s,N=1024,t=dt*(1:N)
-clear all
+clearvars
 dt=0.02
 %N=1024
 %N=4096
@@ -30,12 +30,12 @@ df1=1/(N1*dt)
 f1=df1*(1:N1)-df1;
 x1=4*sin(2*pi*t1)+2*sin(2*pi*5*t1)+2;
 %x=4*sin(2*pi*t);
-figure(1)
+figure
 %subplot(5,1,1)
 plot(t1(1:N1),x1(1:N1))
 xlabel('t/s')
 title('(a)     test signal : x=4*sin(2*pi*t)+2*sin(2*pi*5*t)+2')
-figure(2)
+figure
 y1=fft(x1);
 dft_abs1=abs(y1);
 dft_abs1(1)=dft_abs1(1)/2
@@ -65,7 +65,7 @@ axis([-1 df1*N1 0 4])
 title('(c)        fn-abs')
 xlabel('f/Hz')
 %------------------------------------
-figure(3)
+figure
 fnd_abs1=abs(dt*y1);
 fnd_abs1(1)=fnd_abs1(1)/2
 subplot(221)
@@ -91,12 +91,12 @@ axis([-1 df1*N1 0 5])
 title('(e)            An')
 xlabel('f/Hz')
 %-----------------------------------
-%Ê¹ÓÃµØÕğ¼ÇÂ¼²¨ĞÎ
+%ä½¿ç”¨åœ°éœ‡è®°å½•æ³¢å½¢
 %N=1024
 N1=16000
 N=8000
 %N=8192
-load M02_04_dalianE1.txt; % ¶ÁÈëÒ»µÀ²¨ĞÎÊı¾İ
+load M02_04_dalianE1.txt; % è¯»å…¥ä¸€é“æ³¢å½¢æ•°æ®
 x1(1:N1)=M02_04_dalianE1(2501:N1+2500);
 x(1:N)=M02_04_dalianE1(2501:N+2500);
 dt=0.02
@@ -116,11 +116,11 @@ t1=dt*(1:N1);
 df1=1/(N1*dt)
 f1=df1*(1:N1)-df1;
 %x=4*sin(2*pi*t);
-figure(4)
+figure
 plot(t1(1:N1),x1(1:N1))
 xlabel('t/s')
 title('(a)     test signal : x=M02-04-dalianE1(2501:N+2500)')
-figure(5)
+figure
 y1=fft(x1);
 dft_abs1=abs(y1);
 dft_abs1(1)=dft_abs1(1)/2
@@ -150,7 +150,7 @@ axis([-1 df1*N1 0 1200])
 title('(c)        fn-abs')
 xlabel('f/Hz')
 %------------------------------------
-figure(6)
+figure
 fnd_abs1=abs(dt*y1);
 fnd_abs1(1)=fnd_abs1(1)/2
 subplot(221)

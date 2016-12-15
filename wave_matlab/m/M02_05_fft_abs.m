@@ -111,12 +111,17 @@ title('(e)谱真实振幅','FontName','SimSun')
 xlabel('f/Hz')
 
 %--使用地震记录波形-----------------------------------------------------------
-lonLen=16000;
-shoLen=8000;
-load M02_04_dalianE1.txt;           %读入一道波形数据
+lonLen      = 16000;
+shoLen      = 8000;
+inv         = 0.02;                                %采样频率
+load M02_04_dalianE1.txt;                          %读入一道波形数据
 lonDat(1:lonLen)=M02_04_dalianE1(2501:lonLen+2500);
 shoDat(1:shoLen)=M02_04_dalianE1(2501:shoLen+2500);
-inv=0.02;
+%--绘制生成波形-------------------------
+figure
+plot(lonSeq(1:lonLen),lonDat(1:lonLen))
+xlabel('t/s')
+title('(a) test signal:x=M02-04-dalianE1(2501:N+2500)')
 
 shoSeq=inv*(1:shoLen);
 shoDf=1/(shoLen*inv);
@@ -148,33 +153,26 @@ shoReaAmp(1)=shoReaAmp(1)/2;
 lonReaAmp=2*abs(lonFft)/lonLen;
 lonReaAmp(1)=lonReaAmp(1)/2;
 
-
-%--------------------------------------------------------------------------
-figure
-plot(lonSeq(1:lonLen),lonDat(1:lonLen))
-xlabel('t/s')
-title('(a) test signal:x=M02-04-dalianE1(2501:N+2500)')
-%--------------------------------------------------------------------------
+%--绘制计算结果--------------------------
 figure
 subplot(421)
 bar(shoF(1:shoLen),shoDftAbs(1:shoLen),2)
-%axis([-1 df*N 0 5000])
 axis([-1 shoDf*shoLen 0 8000000])
 title('(b)变换系数绝对值','FontName','SimSun')
 xlabel('f/Hz')
-%------------------------------------
+
 subplot(422)
 bar(lonF(1:lonLen),lonDftAbs(1:lonLen),2)
 axis([-1 lonDf*lonLen 0 8000000])
 title('(b)变换系数绝对值','FontName','SimSun')
 xlabel('f/Hz')
-%-------------------------------------
 
 subplot(423)
 bar(shoF(1:shoLen),shoFnAbs(1:shoLen),2)
 axis([-1 shoDf*shoLen 0 1200])
 title('(c)谱振幅绝对值','FontName','SimSun')
 xlabel('f/Hz')
+
 subplot(424)
 bar(lonF(1:lonLen),lonFnAbs(1:lonLen),2)
 axis([-1 lonDf*lonLen 0 1200])

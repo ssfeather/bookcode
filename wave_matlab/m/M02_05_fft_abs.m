@@ -3,9 +3,9 @@
 %傅里叶振幅谱密度绝对值
 %傅里叶谱的真振幅
 %第一类信号：持续的周期信号
-%x(t)=3*sin(2*pi*t)+1.5*sin(2*pi*5*t)+2
-%dt=0.01s,N=1024,t=dt*(1:N)
+
 clearvars
+%--产生x(t)=3*sin(2*pi*t)+1.5*sin(2*pi*5*t)+2信号----------------------------
 inv=0.02;
 shoLen=1000;
 shoSeq=inv*(1:shoLen);
@@ -14,7 +14,7 @@ lonLen=4000;
 lonSeq=inv*(1:lonLen);
 lonDat=4*sin(2*pi*lonSeq)+2*sin(2*pi*5*lonSeq)+2;
 length([shoSeq(1:shoLen),lonSeq(1:lonLen)])
-
+%------------------------------------
 figure
 plot(lonSeq(1:lonLen),lonDat(1:lonLen),'b')
 hold on
@@ -23,6 +23,7 @@ hold on
 plot([inv*shoLen,inv*shoLen],[max([shoDat,lonDat]),min([shoDat,lonDat])],'r')
 xlabel('t/s')
 title('(a) test signal:x=4*sin(2*pi*t)+2*sin(2*pi*5*t)+2')
+
 %--计算离散傅里叶变换系数绝对值--------------------------------------------------
 shoFft=fft(shoDat);
 shoDftAbs=abs(shoFft);

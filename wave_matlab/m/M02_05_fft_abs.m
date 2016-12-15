@@ -48,13 +48,13 @@ figure
 subplot(221)
 bar(f(1:shoLen),shoDftAbs(1:shoLen),2,'b')
 axis([-1 df*shoLen 0 10000])
-title('(b) dft-abs')
+title('(b) 变换系数绝对值','FontName','SimSun')
 xlabel('f/Hz')
 %------------------------------------
 subplot(222)
 bar(f1(1:lonLen),lonDftAbs(1:lonLen),8,'b')
 axis([-1 df1*lonLen 0 10000])
-title('(b) dft-abs')
+title('(b) 变换系数绝对值','FontName','SimSun')
 xlabel('f/Hz')
 %-------------------------------------
 fn_abs1=abs(lonFft/lonLen);
@@ -62,13 +62,13 @@ fn_abs1(1)=fn_abs1(1)/2;
 subplot(223)
 bar(f(1:shoLen),fnAbs(1:shoLen),2,'b')
 axis([-1 df*shoLen 0 4])
-title('(c) fn-abs')
+title('(c) 谱振幅绝对值','FontName','SimSun')
 xlabel('f/Hz')
 %-------------------------------------
 subplot(224)
 bar(f1(1:lonLen),fn_abs1(1:lonLen),8,'b')
 axis([-1 df1*lonLen 0 4])
-title('(c) fn-abs')
+title('(c) 谱振幅绝对值','FontName','SimSun')
 xlabel('f/Hz')
 %--------------------------------------------------------------------------
 figure
@@ -77,24 +77,24 @@ fnd_abs1(1)=fnd_abs1(1)/2;
 subplot(221)
 bar(f(1:shoLen),fndAbs(1:shoLen),2,'b')
 axis([-1 df*shoLen 0 200])
-title('(d) fnd-abs')
+title('(d) 振幅谱密度绝对值','FontName','SimSun')
 xlabel('f/Hz')
 subplot(222)
 bar(f1(1:lonLen),fnd_abs1(1:lonLen),8,'b')
 axis([-1 df1*lonLen 0 200])
-title('(d) fnd-abs')
+title('(d) 振幅谱密度绝对值','FontName','SimSun')
 xlabel('f/Hz')
 an1=2*abs(lonFft)/lonLen;
 an1(1)=an1(1)/2;
 subplot(223)
 bar(f(1:shoLen),an(1:shoLen),2,'b')
 axis([-1 df*shoLen 0 5])
-title('(e) An')
+title('(e) 谱真实振幅','FontName','SimSun')
 xlabel('f/Hz')
 subplot(224)
 bar(f1(1:lonLen),an1(1:lonLen),8,'b')
 axis([-1 df1*lonLen 0 5])
-title('(e) An')
+title('(e) 谱真实振幅','FontName','SimSun')
 xlabel('f/Hz')
 
 %--------------------------------------------------------------------------

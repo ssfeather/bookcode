@@ -19,7 +19,6 @@ function [ B,theta,f1] = M02_02_firresp_func(y,num,rate )
 
 fmax=rate/2;
 T=1/rate; %采样间隔
-r=1/T;
 
 for f=1:fmax*100
     f1(f)=f/100;

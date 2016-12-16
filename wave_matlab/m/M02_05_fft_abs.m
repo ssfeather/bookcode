@@ -113,14 +113,14 @@ title('(e)谱真实振幅','FontName','SimSun')
 xlabel('f/Hz')
 
 %--使用地震记录波形-----------------------------------------------------------
+load('M02_04_dalianE1.txt');                       %读入一道波形数据
+lonDat      =M02_04_dalianE1(2501:lonLen+2500);
+shoDat      =M02_04_dalianE1(2501:shoLen+2500);
 lonLen      = 16000;
 shoLen      = 8000;
 inv         = 0.02;                                %采样频率
 shoSeq      = inv*(1:shoLen);
 lonSeq      = inv*(1:lonLen);
-load M02_04_dalianE1.txt;                          %读入一道波形数据
-lonDat(1:lonLen)=M02_04_dalianE1(2501:lonLen+2500);
-shoDat(1:shoLen)=M02_04_dalianE1(2501:shoLen+2500);
 %--绘制生成波形-------------------------
 scrsz = get(groot,'ScreenSize');
 figure('Position',[scrsz(3)/3 scrsz(4)/2 scrsz(3)/2 scrsz(4)/4])

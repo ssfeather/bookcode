@@ -13,7 +13,8 @@ lonLen      = 4000;                             %长数据长度
 lonSeq      = inv*(1:lonLen);
 lonDat      = 4*sin(2*pi*lonSeq)+2*sin(2*pi*5*lonSeq)+2;
 %--绘制生成波形-------------------------
-figure
+scrsz = get(groot,'ScreenSize');
+figure('Position',[scrsz(3)/3 scrsz(4)/2 scrsz(3)/2 scrsz(4)/4])
 %???按书中说前1000个点，后面4000个点，（1000+4000）× 0.02=100s，不应该是80s的时间长,第二章P20???
 
 %长80s绘图
@@ -31,7 +32,7 @@ plot([inv*shoLen,inv*shoLen],[max([shoDat,lonDat]),min([shoDat,lonDat])],'r')
 xlabel('t/s')
 title('(a) test signal:x=4*sin(2*pi*t)+2*sin(2*pi*5*t)+2')
 
-%------------------------------------
+%--计算特征值----------------------------------------------------------------
 shoDf=1/(shoLen*inv);                   %???为什么横坐标这么计算???
 shoF=shoDf*(1:shoLen)-shoDf;
 lonDf=1/(lonLen*inv);
@@ -61,7 +62,8 @@ lonReaAmp=2*abs(lonFft)/lonLen;
 lonReaAmp(1)=lonReaAmp(1)/2;
 
 %--绘制计算结果--------------------------
-figure
+scrsz = get(groot,'ScreenSize');
+figure('Position',[scrsz(3)/3 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2])
 subplot(421)
 bar(shoF(1:shoLen),shoDftAbs(1:shoLen),2,'b')
 axis([-1 shoDf*shoLen 0 10000])
@@ -120,7 +122,9 @@ load M02_04_dalianE1.txt;                          %读入一道波形数据
 lonDat(1:lonLen)=M02_04_dalianE1(2501:lonLen+2500);
 shoDat(1:shoLen)=M02_04_dalianE1(2501:shoLen+2500);
 %--绘制生成波形-------------------------
-figure
+scrsz = get(groot,'ScreenSize');
+figure('Position',[scrsz(3)/3 scrsz(4)/2 scrsz(3)/2 scrsz(4)/4])
+
 plot(lonSeq(1:lonLen),lonDat(1:lonLen),'b')
 hold on
 plot(shoSeq(1:shoLen),shoDat(1:shoLen),'g')
@@ -129,7 +133,7 @@ plot([inv*shoLen,inv*shoLen],[max(lonDat),min(lonDat)],'r')
 xlabel('t/s')
 title('(a) test signal:x=M02-04-dalianE1(2501:N+2500)')
 
-%------------------------------------
+%--计算特征值----------------------------------------------------------------
 shoDf=1/(shoLen*inv);
 shoF=shoDf*(1:shoLen)-shoDf;
 lonDf=1/(lonLen*inv);
@@ -159,7 +163,9 @@ lonReaAmp=2*abs(lonFft)/lonLen;
 lonReaAmp(1)=lonReaAmp(1)/2;
 
 %--绘制计算结果--------------------------
-figure
+scrsz = get(groot,'ScreenSize');
+figure('Position',[scrsz(3)/3 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2])
+
 subplot(421)
 bar(shoF(1:shoLen),shoDftAbs(1:shoLen),2)
 axis([-1 shoDf*shoLen 0 8000000])

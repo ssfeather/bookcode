@@ -38,19 +38,4 @@ for f=1:fmax*100
    B(f)=20*log10(A(f));
 end
 
-% figure(1)
-% subplot(3,1,1);
-% plot(f1,A);
-% plot(f1,B);
-% xlabel('frequency/Hz');
-% ylabel('Amplitude resp./dB');
-% title({'FIR filter firlh02 frequency response, sample rate=',r,'s/s'});
-% subplot(3,1,2);
-% p=unwrap(theta*pi/180)*180/pi;
-% plot(f1,p);
-% xlabel('frequency/Hz');
-% ylabel('Phase resp./Degrees');
-% subplot(3,1,3);
-% plot(y,'.');
-        
         

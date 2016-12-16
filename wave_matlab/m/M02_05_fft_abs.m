@@ -1,7 +1,7 @@
-%M02_06_fft_abs.m计算时间序列的DFT绝对值、
-%按时间窗归一化的傅里叶谱振幅绝对值、
-%傅里叶振幅谱密度绝对值
-%傅里叶谱的真振幅
+%M02_06_fft_abs.m计算时间序列的DFT绝对值
+%  按时间窗归一化的傅里叶谱振幅绝对值
+%  傅里叶振幅谱密度绝对值
+%  傅里叶谱的真振幅
 
 clearvars
 %--使用持续的周期信号x(t)=3*sin(2*pi*t)+1.5*sin(2*pi*5*t)+2--------------------
@@ -17,17 +17,17 @@ figure
 %???按书中说前1000个点，后面4000个点，（1000+4000）× 0.02=100s，不应该是80s的时间长,第二章P20???
 
 %长80s绘图
-% plot(lonSeq(1:lonLen),lonDat(1:lonLen),'b')
-% hold on
-% plot(shoSeq(1:shoLen),shoDat(1:shoLen),'g')
-% hold on
-% plot([inv*shoLen,inv*shoLen],[max([shoDat,lonDat]),min([shoDat,lonDat])],'r')
-%长100s绘图
+plot(lonSeq(1:lonLen),lonDat(1:lonLen),'b')
+hold on
 plot(shoSeq(1:shoLen),shoDat(1:shoLen),'g')
 hold on
-plot(lonSeq(1:lonLen)+max(shoSeq),lonDat(1:lonLen),'b')
-hold on
 plot([inv*shoLen,inv*shoLen],[max([shoDat,lonDat]),min([shoDat,lonDat])],'r')
+%长100s绘图
+% plot(shoSeq(1:shoLen),shoDat(1:shoLen),'g')
+% hold on
+% plot(lonSeq(1:lonLen)+max(shoSeq),lonDat(1:lonLen),'b')
+% hold on
+% plot([inv*shoLen,inv*shoLen],[max([shoDat,lonDat]),min([shoDat,lonDat])],'r')
 xlabel('t/s')
 title('(a) test signal:x=4*sin(2*pi*t)+2*sin(2*pi*5*t)+2')
 
@@ -114,19 +114,24 @@ xlabel('f/Hz')
 lonLen      = 16000;
 shoLen      = 8000;
 inv         = 0.02;                                %采样频率
+shoSeq      = inv*(1:shoLen);
+lonSeq      = inv*(1:lonLen);
 load M02_04_dalianE1.txt;                          %读入一道波形数据
 lonDat(1:lonLen)=M02_04_dalianE1(2501:lonLen+2500);
 shoDat(1:shoLen)=M02_04_dalianE1(2501:shoLen+2500);
 %--绘制生成波形-------------------------
 figure
-plot(lonSeq(1:lonLen),lonDat(1:lonLen))
+plot(lonSeq(1:lonLen),lonDat(1:lonLen),'b')
+hold on
+plot(shoSeq(1:shoLen),shoDat(1:shoLen),'g')
+hold on
+plot([inv*shoLen,inv*shoLen],[max(lonDat),min(lonDat)],'r')
 xlabel('t/s')
 title('(a) test signal:x=M02-04-dalianE1(2501:N+2500)')
 
-shoSeq=inv*(1:shoLen);
+%------------------------------------
 shoDf=1/(shoLen*inv);
 shoF=shoDf*(1:shoLen)-shoDf;
-lonSeq=inv*(1:lonLen);
 lonDf=1/(lonLen*inv);
 lonF=lonDf*(1:lonLen)-lonDf;
 

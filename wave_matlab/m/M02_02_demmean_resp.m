@@ -1,15 +1,20 @@
-% 滑动平均的等效Fir滤波器
+%% 滑动平均的等效Fir滤波器
+%       sliLength : 滑动长度
+%       datLength : 数据长度
+%       Fs        : 采用率
+%       filCloth  : 滑动平均的等效滤波器系数
 
-clear all
-sliLength=200;
-datLength=2*sliLength+1;
-Fs=50;
+clearvars;
+
+sliLength = 200;
+datLength = 2*sliLength+1;
+Fs = 50;
 filCloth = zeros(1,datLength);
 for i=1:datLength
-    filCloth(i)=1/datLength; %滑动平均的等效滤波器系数
+    filCloth(i)=1/datLength;        
 end
-[ B,theta,f1] = M02_02_firresp_func(filCloth,datLength,Fs);
-p=unwrap(theta*pi/180)*180/pi;
+[B,theta,f1] = M02_02_firresp_func(filCloth,datLength,Fs);
+p = unwrap(theta*pi/180)*180/pi;
 
 figure()
 subplot(3,1,1);

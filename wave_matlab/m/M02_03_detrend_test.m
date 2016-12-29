@@ -9,6 +9,7 @@ mixData = sigData+treData;
 %--断点在第[5 9 10 14]个元素-------------------------
 detData = detrend(mixData,'linear',[5 9 10 14]); 
 
+%% 绘图---------------------------------------------------------------------
 figure();
 mp = plot(mixData,'b- .');
 hold on

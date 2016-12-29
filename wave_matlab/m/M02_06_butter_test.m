@@ -1,15 +1,21 @@
-%Butterworth filter design
+%% 布特沃斯滤波器测试
+%       staN      ： 低阶
+%       endN      ： 高阶
+%       fn        ： 拐角频率
+%       wn        ： 拐角频率弧度
+%       ftype     ： 滤波类型
 clearvars;
-staN=10;
-endN=20;
-fn=15;              % 拐角频率
-wn=fn*2*pi;
-ftype='low';
 
 scrsz = get(groot,'ScreenSize');
 figure('Position',[scrsz(3)/3 scrsz(4)/2 scrsz(3)/2 scrsz(4)/1.5]);
+%% 计算巴特沃斯低通滤波器幅频特性和相频特性
+staN=10;
+endN=20;
+fn=15;  
+wn=fn*2*pi;
+ftype='low';
+% 计算巴特沃斯低通滤波器幅频特性
 for n=staN:endN
-   
     [z,p,k]=butter(n,wn,ftype,'s');
     [b,a]=zp2tf(z,p,k);
     [h,w]=freqs(b,a);
@@ -24,28 +30,42 @@ for n=staN:endN
     subplot(3,2,1);
     plot(w/(2*pi),abs(h),co);
     hold on;
-    axis([0 25 0 1.1]);
-    ylabel('归一化振幅');
-    grid on;
-    xlabel('频率/Hz');   
-    set(gca,'YTick',0:0.1:1.1);
+end 
+axis([0 25 0 1.1]);
+ylabel('归一化振幅');
+grid on;
+xlabel('频率/Hz');   
+set(gca,'YTick',0:0.1:1.1);
+title('低通幅频特性')
+% 计算巴特沃斯低通滤波器相频特性
+for n=staN:endN
+    [z,p,k]=butter(n,wn,ftype,'s');
+    [b,a]=zp2tf(z,p,k);
+    [h,w]=freqs(b,a);
     
+    co='g';
+    if n==staN 
+        co='b';     % 蓝色为低阶端
+    end
+    if n==endN
+        co='r';     % 红色为高阶端
+    end    
     subplot(3,2,2);
     plot(w/(2*pi),unwrap(angle(h))*180/pi,co);
     hold on;
-    axis([0 25 -2000 200]);
-    ylabel('相位/°');
-    wn1=15*2*pi;
 end
+axis([0 25 -2000 200]);
+ylabel('相位/°');
 grid on;
 xlabel('频率/Hz');
-
-%--------------------------------------
+title('低通相频特性')
+%% 计算巴特沃斯高通滤波器幅频特性和相频特性
 staN=10;
 endN=20;
-fn=5;               %拐角频率
+fn=5;            
 wn=fn*2*pi;
 ftype='high';
+% 计算巴特沃斯高通滤波器幅频特性
 for n=staN:1:endN
     
     [z,p,k]=butter(n,wn,ftype,'s');
@@ -62,29 +82,44 @@ for n=staN:1:endN
     subplot(3,2,3)
     plot(w/(2*pi),abs(h),co);
     hold on;
-    ylabel('归一化振幅');
-    axis([0 25 0 1.1]);
-    grid on;
-    xlabel('频率/Hz');
-    set(gca,'YTick',0:0.1:1.1);
+end 
+ylabel('归一化振幅');
+axis([0 25 0 1.1]);
+grid on;
+xlabel('频率/Hz');
+set(gca,'YTick',0:0.1:1.1);
+title('高通幅频特性')
+% 计算巴特沃斯高通滤波器相频特性
+for n=staN:1:endN
     
+    [z,p,k]=butter(n,wn,ftype,'s');
+    [b,a]=zp2tf(z,p,k);
+    [h,w]=freqs(b,a);
+    
+    co='g';
+    if n==staN
+        co='b';     %蓝色为低阶端
+    end
+    if n==endN
+        co='r';     %红色为高阶端
+    end    
     subplot(3,2,4);
     plot(w/(2*pi),unwrap(angle(h))*180/pi,co);
     hold on;
-    axis([0 25 -2000 200]);
-    ylabel('相位/°');
 end
+axis([0 25 -2000 200]);
+ylabel('相位/°');
 grid on
 xlabel('频率/Hz')
-%---------------------------------------
+title('高通相频特性')
+%% 计算巴特沃斯带通滤波器幅频特性和相频特性
 staN=5;
 endN=10;
-fn1=5;    %拐角频率
+fn1=5;   
 fn2=15;
-%wn=fn*2  /Fs % 按奈奎斯特频率归一化的圆频率
 wn=[fn1 fn2]*2*pi;
+% 计算巴特沃斯带通滤波器幅频特性
 for n=staN:1:endN
-   
     [z,p,k]=butter(n,wn,'s');
     [b,a]=zp2tf(z,p,k);
     [h,w]=freqs(b,a);
@@ -99,22 +134,36 @@ for n=staN:1:endN
     subplot(3,2,5);
     plot(w/(2*pi),abs(h),co);
     hold on;
-    ylabel('归一化振幅');
-    grid on;
-    xlabel('频率/Hz');
-    axis([0 25 0 1.1]);
-    set(gca,'YTick',0:0.1:1.1);
+end
+ylabel('归一化振幅');
+grid on;
+xlabel('频率/Hz');
+axis([0 25 0 1.1]);
+set(gca,'YTick',0:0.1:1.1);
+title('带通相幅特性')
+% 计算巴特沃斯带通滤波器相频特性
+for n=staN:1:endN
+    [z,p,k]=butter(n,wn,'s');
+    [b,a]=zp2tf(z,p,k);
+    [h,w]=freqs(b,a);
     
+    co='g';
+    if n==staN
+        co='b';   %蓝色为低阶端
+    end
+    if n==endN
+        co='r';    %红色为高阶端
+    end    
     subplot(3,2,6);
     plot(w/(2*pi),unwrap(angle(h))*180/pi,co);
     hold on;
-    axis([0 25 -2000 200]);
-    ylabel('相位/°');
 end
+axis([0 25 -2000 200]);
+ylabel('相位/°');
 grid on;
 xlabel('频率/Hz');
-
-%--计算零极点----------------------------------------------------------------
+title('带通相频特性')
+%% 计算零极点---------------------------------------------------------------
 
 % 当阶数相同且截止频率相同时，高通和低通有相同的极点值。
 fn=15;
@@ -132,6 +181,7 @@ wn=[5 15]*2*pi;
 %--绘制零极点---------------------------------------
 scrsz = get(groot,'ScreenSize');
 figure('Position',[scrsz(3)/3 scrsz(4)/2 scrsz(3)/2 scrsz(4)/4]);
+
 % 在s平面上画低通极点分布图
 subplot(1,3,1)
 plot(real(lowp),imag(lowp),'b+');

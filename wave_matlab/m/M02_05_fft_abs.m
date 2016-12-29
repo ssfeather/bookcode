@@ -24,12 +24,6 @@ hold on
 plot(shoSeq(1:shoLen),shoDat(1:shoLen),'g')
 hold on
 plot([inv*shoLen,inv*shoLen],[max([shoDat,lonDat]),min([shoDat,lonDat])],'r')
-%长100s绘图
-% plot(shoSeq(1:shoLen),shoDat(1:shoLen),'g')
-% hold on
-% plot(lonSeq(1:lonLen)+max(shoSeq),lonDat(1:lonLen),'b')
-% hold on
-% plot([inv*shoLen,inv*shoLen],[max([shoDat,lonDat]),min([shoDat,lonDat])],'r')
 xlabel('t/s')
 title('(a) test signal:x=4*sin(2*pi*t)+2*sin(2*pi*5*t)+2')
 

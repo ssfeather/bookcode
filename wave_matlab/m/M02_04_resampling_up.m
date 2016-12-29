@@ -25,13 +25,12 @@ comEnd = newDatLen-newFs-1;
 difDat = zeros(1,comEnd);                     %初始化重采样序列
 for m=comSta:comEnd
     for n=floor(m*ratio)-orgFs:floor(m*ratio)+orgFs
-        %???书中公式没有用到滤波器参数（zeta）???
-        difDat(m)=difDat(m)+mix100(n)*sinc(zeta*(m*ratio-n));
+        difDat(m)=difDat(m)+mix100(n)*sinc((m*ratio-n));
     end
 end
 
 t500=(0:newDatLen-1)/newFs;
-plot(t500(comSta-newFs-4:comEnd-newFs-4),difDat(comSta:comEnd)*zeta,'b-o');
+plot(t500(comSta-newFs-4:comEnd-newFs-4),difDat(comSta:comEnd),'b-o');
 hold on
 
 %--生成0.1Hz和30Hz的混合信号（30Hz信号振幅是0.1Hz信号振幅的1/2）,采用率为1000--------

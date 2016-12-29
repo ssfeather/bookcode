@@ -16,7 +16,7 @@ end
 [B,theta,f1] = M02_02_firresp_func(filCloth,datLength,Fs);
 p = unwrap(theta*pi/180)*180/pi;
 
-figure()
+figure();
 subplot(3,1,1);
 plot(f1,B);
 xlabel('频率/Hz');

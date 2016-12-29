@@ -1,7 +1,7 @@
-%M02_06_fft_abs.m计算时间序列的DFT绝对值
-%  按时间窗归一化的傅里叶谱振幅绝对值
-%  傅里叶振幅谱密度绝对值
-%  傅里叶谱的真振幅
+% 计算时间序列的DFT绝对值
+% 按时间窗归一化的傅里叶谱振幅绝对值
+% 傅里叶振幅谱密度绝对值
+% 傅里叶谱的真振幅
 
 clearvars
 %--使用持续的周期信号x(t)=3*sin(2*pi*t)+1.5*sin(2*pi*5*t)+2--------------------
@@ -114,17 +114,16 @@ xlabel('f/Hz')
 
 %--使用地震记录波形-----------------------------------------------------------
 load('M02_04_dalianE1.txt');                       %读入一道波形数据
-lonDat      =M02_04_dalianE1(2501:lonLen+2500);
-shoDat      =M02_04_dalianE1(2501:shoLen+2500);
 lonLen      = 16000;
 shoLen      = 8000;
+lonDat      =M02_04_dalianE1(2501:lonLen+2500);
+shoDat      =M02_04_dalianE1(2501:shoLen+2500);
 inv         = 0.02;                                %采样频率
 shoSeq      = inv*(1:shoLen);
 lonSeq      = inv*(1:lonLen);
 %--绘制生成波形-------------------------
 scrsz = get(groot,'ScreenSize');
 figure('Position',[scrsz(3)/3 scrsz(4)/2 scrsz(3)/2 scrsz(4)/4])
-
 plot(lonSeq(1:lonLen),lonDat(1:lonLen),'b')
 hold on
 plot(shoSeq(1:shoLen),shoDat(1:shoLen),'g')

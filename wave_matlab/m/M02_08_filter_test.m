@@ -1,17 +1,17 @@
-%FIRÂË²¨Æ÷ÊÔÑé£¨1.4.7.3½Ú£¬Éú³ÉÍ¼1.15-1.22£¬ÒÔ¼°Í¼1.11b¡¢1.13b£©
-%ÊäÈëĞÅºÅ:²ÉÑùÂÊÎª200spsµÄ½×Ô¾ĞÅºÅ
+%FIRæ»¤æ³¢å™¨è¯•éªŒï¼ˆ1.4.7.3èŠ‚ï¼Œç”Ÿæˆå›¾1.15-1.22ï¼Œä»¥åŠå›¾1.11bã€1.13bï¼‰
+%è¾“å…¥ä¿¡å·:é‡‡æ ·ç‡ä¸º200spsçš„é˜¶è·ƒä¿¡å·
 clear
 
-%ÏßĞÔÏàÎ»ÂË²¨Æ÷
+%çº¿æ€§ç›¸ä½æ»¤æ³¢å™¨
 load M02_firln02.h
 fir_temp=M02_firln02;
 rate=fir_temp(1)
 T=1/rate
-Nfir=fir_temp(2)     %ÂË²¨Æ÷ÏµÊı³¤¶È
+Nfir=fir_temp(2)     %æ»¤æ³¢å™¨ç³»æ•°é•¿åº¦
 for i=1:Nfir
     firl(i)=fir_temp(i+2);
 end
-%Éú³É¼ÙÏëÊäÈëĞÅºÅ
+%ç”Ÿæˆå‡æƒ³è¾“å…¥ä¿¡å·
 Nzero=200;
 for i=1:Nzero
     xstep(i)=0;
@@ -19,10 +19,10 @@ end
 None=300
 for i=1:None
    % xstep(Nzero+i)=1;
-     xstep(Nzero+i)=sin(2*pi*10*i*T)+0.5*sin(2*pi*20*i*T+pi/2); %Á½¸öÕıÏÒĞÅºÅµş¼Ó
+     xstep(Nzero+i)=sin(2*pi*10*i*T)+0.5*sin(2*pi*20*i*T+pi/2); %ä¸¤ä¸ªæ­£å¼¦ä¿¡å·å åŠ 
 end
 N=length(xstep)
-%ñŞ»ıÂË²¨
+%è¤¶ç§¯æ»¤æ³¢
 yl=zeros(1,N)
 for i=Nfir+1:N       
     for j=1:Nfir
@@ -37,7 +37,7 @@ plot(xstep)
 subplot(2,1,2)
 plot(yl)
 title('moving sum')
-%×îĞ¡ÏàÎ»ÂË²¨Æ÷
+%æœ€å°ç›¸ä½æ»¤æ³¢å™¨
 load M02_firm02.h
 fir_temp=M02_firm02;
 rate=fir_temp(1)
@@ -61,28 +61,28 @@ subplot(2,1,1)
 plot(xstep)
 subplot(2,1,2)
 plot(ym)
-%ĞÅºÅ»Ö¸´
-[q,r] = deconv(yl,firl);   %ÏßĞÔÏàÎ»
+%ä¿¡å·æ¢å¤
+[q,r] = deconv(yl,firl);   %çº¿æ€§ç›¸ä½
 figure(3)
 subplot(2,1,1)
 plot(yl)
 subplot(2,1,2)
 plot(q)
-[q,r] = deconv(ym,firm);  %×îĞ¡ÏàÎ»
+[q,r] = deconv(ym,firm);  %æœ€å°ç›¸ä½
 figure(4)
 subplot(2,1,1)
 plot(ym)
 subplot(2,1,2)
 plot(q)
-%ÓÃMatlab¹¤¾ß»­ÏìÓ¦ÇúÏß
+%ç”¨Matlabå·¥å…·ç”»å“åº”æ›²çº¿
 figure(5)
-freqz(firl,1)   %ÏßĞÔÏàÎ»FIR
+freqz(firl,1)   %çº¿æ€§ç›¸ä½FIR
 figure(6)
-freqz(firm,1)  %×îĞ¡ÏàÎ»FIR
-% Ê¹ÓÃMatlabº¯Êı
+freqz(firm,1)  %æœ€å°ç›¸ä½FIR
+% ä½¿ç”¨Matlabå‡½æ•°
 figure(7)
-[yl,zf0]=filter(firl,1,xstep);   %ÏßĞÔÏàÎ»FIRÂË²¨Æ÷
-zf0   %ÂË²¨Æ÷×îÖÕ×´Ì¬
+[yl,zf0]=filter(firl,1,xstep);   %çº¿æ€§ç›¸ä½FIRæ»¤æ³¢å™¨
+zf0   %æ»¤æ³¢å™¨æœ€ç»ˆçŠ¶æ€
 zf0l=length(zf0)
 subplot(2,1,1)
 plot(xstep)
@@ -90,14 +90,14 @@ subplot(2,1,2)
 plot(yl)
 title('filter')
 figure(8)
-yll=filtfilt(firl,1,xstep);%Õı·´ÂË²¨
+yll=filtfilt(firl,1,xstep);%æ­£åæ»¤æ³¢
 
 subplot(2,1,1)
 plot(xstep)
 subplot(2,1,2)
 plot(yll)
 title('filtfilt')
-%°´¹«Ê½£¨2.97£©¼ÆËãÂË²¨Æ÷×îÖÕ×´Ì¬zf
+%æŒ‰å…¬å¼ï¼ˆ2.97ï¼‰è®¡ç®—æ»¤æ³¢å™¨æœ€ç»ˆçŠ¶æ€zf
 b=firl;
 a=1;
 Nb=length(b)
@@ -120,15 +120,15 @@ for m=1:M
 zfl=length(zf)
 zf
 figure(9)    
-plot(zf,'r');hold on   %¼ÆËã³öµÄzf
-plot(zf0,'b')              %ÓÃ[y,zf0]=filter(b,a,x)µÃµ½µÄ
-%½á¹ûÒ»ÖÂ
-%ÀûÓÃÂË²¨Æ÷×îÖÕ×´Ì¬×÷ÎªÏÂÒ»¶ÎĞÅºÅÂË²¨µÄ³õÊ¼×´Ì¬
+plot(zf,'r');hold on   %è®¡ç®—å‡ºçš„zf
+plot(zf0,'b')              %ç”¨[y,zf0]=filter(b,a,x)å¾—åˆ°çš„
+%ç»“æœä¸€è‡´
+%åˆ©ç”¨æ»¤æ³¢å™¨æœ€ç»ˆçŠ¶æ€ä½œä¸ºä¸‹ä¸€æ®µä¿¡å·æ»¤æ³¢çš„åˆå§‹çŠ¶æ€
 
 N1one=300
 for i=1:N1one
     %xstep1(i)=1;
-     xstep1(i)=sin(2*pi*10*i*T)+0.5*sin(2*pi*20*i*T+pi/2); %Á½¸öÕıÏÒĞÅºÅµş¼Ó
+     xstep1(i)=sin(2*pi*10*i*T)+0.5*sin(2*pi*20*i*T+pi/2); %ä¸¤ä¸ªæ­£å¼¦ä¿¡å·å åŠ 
 end
 N1zero=200;
 for i=1:N1zero
@@ -136,30 +136,30 @@ for i=1:N1zero
 end
 N1=length(xstep1)
 N2=N+N1
-%Á½¶ËĞÅºÅÁ¬½Ó
+%ä¸¤ç«¯ä¿¡å·è¿æ¥
 x2(1:N)=xstep(1:N);
 x2(N+1:N2)=xstep1(1:N1);
 figure(10)
 plot(x2)
-[y2,zf2]=filter(b,a,x2); %Á½¶ÎºÏÎªÒ»¶ÎÂË²¨
+[y2,zf2]=filter(b,a,x2); %ä¸¤æ®µåˆä¸ºä¸€æ®µæ»¤æ³¢
 figure(11)
 plot(y2)
 figure(12)
 plot(zf2)
-%·ÖÁ½¶ËÂË²¨£¬µÚ2¶ÎÀûÓÃµÚ1¶ÎµÄzf1
+%åˆ†ä¸¤ç«¯æ»¤æ³¢ï¼Œç¬¬2æ®µåˆ©ç”¨ç¬¬1æ®µçš„zf1
 [y21,zf1]=filter(b,a,xstep)
-[y22,zf2]=filter(b,a,xstep1,zf1) %µÚ2¶ÎÓÃµÚ1¶ÎµÄzf×÷Îªzi
+[y22,zf2]=filter(b,a,xstep1,zf1) %ç¬¬2æ®µç”¨ç¬¬1æ®µçš„zfä½œä¸ºzi
 y2(1:N)=y21(1:N);
 y2(N+1:N2)=y22(1:N1);
 figure(13)
 plot(y2)
-%¿ÉÒÔ¿´µ½Í¼13ÓëÍ¼11Ò»ÖÂ
-[y22,zf2]=filter(b,a,xstep1)  %µÚ2¶Î²»ÓÃµÚ1¶ÎµÄzf×÷Îªzi
+%å¯ä»¥çœ‹åˆ°å›¾13ä¸å›¾11ä¸€è‡´
+[y22,zf2]=filter(b,a,xstep1)  %ç¬¬2æ®µä¸ç”¨ç¬¬1æ®µçš„zfä½œä¸ºzi
 y2(N+1:N2)=y22(1:N1);
 figure(14)
-plot(y2)   %½á¹ûÁ½¶ÎµÄÊä³ö²»ÄÜÏÎ½Ó
-% °´Ê½£¨2.98£©¼ÆËãµÚ1¶ÎµÄzf£¬×÷ÎªµÚ2¶ÎµÄzi£¬°´Ê½£¨2.99£©¼ÆËãµÚ2¶ÎµÄÂË²¨Êä³ö
-%°´¹«Ê½£¨2.98£©¼ÆËãÂË²¨Æ÷×îÖÕ×´Ì¬zf
+plot(y2)   %ç»“æœä¸¤æ®µçš„è¾“å‡ºä¸èƒ½è¡”æ¥
+% æŒ‰å¼ï¼ˆ2.98ï¼‰è®¡ç®—ç¬¬1æ®µçš„zfï¼Œä½œä¸ºç¬¬2æ®µçš„ziï¼ŒæŒ‰å¼ï¼ˆ2.99ï¼‰è®¡ç®—ç¬¬2æ®µçš„æ»¤æ³¢è¾“å‡º
+%æŒ‰å…¬å¼ï¼ˆ2.98ï¼‰è®¡ç®—æ»¤æ³¢å™¨æœ€ç»ˆçŠ¶æ€zf
 b=firl;
 a=1;
 Nb=length(b)
@@ -182,8 +182,8 @@ for m=1:M
 zfl=length(zf)
 zf
 figure(15)    
-plot(zf,'r');hold on   %¼ÆËã³öµÄzf
-% Ê½£¨2.99£©
+plot(zf,'r');hold on   %è®¡ç®—å‡ºçš„zf
+% å¼ï¼ˆ2.99ï¼‰
 for k=1:M
     y1(k)=0;
     N11=min(k,Nb-1)
@@ -216,11 +216,11 @@ for k=1:M
     y1(i)=y1(i)/a(1);
     end
     subplot(2,1,1)
-plot(xstep1,'r');%µÚ2¶ÎÊäÈëĞÅºÅ
+plot(xstep1,'r');%ç¬¬2æ®µè¾“å…¥ä¿¡å·
 subplot(2,1,2)
-    plot(y1)   %µÚ2¶ÎÊä³öµÄÂË²¨ºóĞÅºÅ,ÀûÓÃÁËµÚ1¶ÎµÄÂË²¨Æ÷×îÖÕ×´Ì¬
-%Á½¶ÎÁ¬½Ó
+    plot(y1)   %ç¬¬2æ®µè¾“å‡ºçš„æ»¤æ³¢åä¿¡å·,åˆ©ç”¨äº†ç¬¬1æ®µçš„æ»¤æ³¢å™¨æœ€ç»ˆçŠ¶æ€
+%ä¸¤æ®µè¿æ¥
 y2(N+1:N2)=y1(1:N1);
 figure(17)
 plot(y2)
-%Á¬½Ó³É¹¦
+%è¿æ¥æˆåŠŸ

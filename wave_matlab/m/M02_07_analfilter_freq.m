@@ -1,11 +1,11 @@
 %M02_07_analfilter_freq.m
-%ÀûÓÃÄ£ÄâÂË²¨Æ÷ÔÚÆµÂÊÓò½øĞĞÂË²¨
-%ÂË²¨Æ÷Ê¾Àı£º¶ş½×¸ßÍ¨°ÍÌØÎÖË¹ÂË²¨Æ÷
-%½ØÖ¹ÆµÂÊÎª1Hz¡£
+%åˆ©ç”¨æ¨¡æ‹Ÿæ»¤æ³¢å™¨åœ¨é¢‘ç‡åŸŸè¿›è¡Œæ»¤æ³¢
+%æ»¤æ³¢å™¨ç¤ºä¾‹ï¼šäºŒé˜¶é«˜é€šå·´ç‰¹æ²ƒæ–¯æ»¤æ³¢å™¨
+%æˆªæ­¢é¢‘ç‡ä¸º1Hzã€‚
 %M02_07_butter_design
 clear all
-N=2   %¶ş½×
-Wc=1*2*pi %½ØÖ¹ÆµÂÊ1Hz
+N=2   %äºŒé˜¶
+Wc=1*2*pi %æˆªæ­¢é¢‘ç‡1Hz
 fc=Wc/(2*pi)
 [z,p,k]=butter(N,Wc,'high','s')
 [b,a]=zp2tf(z,p,k)
@@ -14,13 +14,13 @@ w
 wl=length(w)
 figure(1)
 subplot(2,1,1)
-%semilogx(w/(2*pi),abs(h),'b');hold on   %·ùÆµÏìÓ¦
+%semilogx(w/(2*pi),abs(h),'b');hold on   %å¹…é¢‘å“åº”
 plot(w/(2*pi),abs(h),'b');hold on
 %plot(w,abs(h),co);hold on
 axis([0 15 0 1.1])
-ylabel('¹éÒ»»¯Õñ·ù')
+ylabel('å½’ä¸€åŒ–æŒ¯å¹…')
 grid on
-xlabel('ÆµÂÊ/Hz')
+xlabel('é¢‘ç‡/Hz')
 %axis([0 1 0 1.1])
 %set(gca,'YTick',0:0.1:1.1)
 subplot(2,1,2)
@@ -28,10 +28,10 @@ subplot(2,1,2)
 plot(w/(2*pi),unwrap(angle(h))*180/pi,'b');hold on
 axis([0 15 -1000 1000])
 grid on
-ylabel('ÏàÎ»/¡ã')
-xlabel('ÆµÂÊ/Hz')
+ylabel('ç›¸ä½/Â°')
+xlabel('é¢‘ç‡/Hz')
 %-------------------------------------------------------
-% ¶ÁÈëÊ¾ÀıµØÕğ²¨ĞÎ£º°Í³şµØÕğÌ¨CTS-1´¹Ö±Ïò¼ÇÂ¼M7.72013Äê4ÔÂ16ÈÕÒÁÀÊ-°Í»ùË¹Ì¹½»½çµØÕğ
+% è¯»å…¥ç¤ºä¾‹åœ°éœ‡æ³¢å½¢ï¼šå·´æ¥šåœ°éœ‡å°CTS-1å‚ç›´å‘è®°å½•M7.72013å¹´4æœˆ16æ—¥ä¼Šæœ—-å·´åŸºæ–¯å¦äº¤ç•Œåœ°éœ‡
 %XX_BCH_BHZ_2.txt
 load XX_BCH_BHZ_2.txt
 Fs=100
@@ -45,15 +45,15 @@ wave1([1:n1])=wave([n2+1:n2+n1]);
 t1=([1:n1])/Fs;
 figure(2)
 plot(t1,wave1)
-xlabel('Ê±¼ä/s')
+xlabel('æ—¶é—´/s')
 ylabel('count')
 fft_wave1=fft(wave1);
 w_wave1=([1:n1])*2*pi*Fs/n1;
 f_wave1=w_wave1/(2*pi);
 h_wave1=freqs(b,a,w_wave1);
 h1_wave1=zeros(1,n1);
-%¹¹½¨Óë¸µÀïÒ¶±ä»»µÃµ½µÄÇ°¶ÎÓëºó¶Ë¹²éîĞÎÊ½Êı¾İ¶ÔÓ¦µÄÂË²¨Æ÷
-%ÍòÓÀ¸ï£¬2012£¬µÚ429Ò³£©
+%æ„å»ºä¸å‚…é‡Œå¶å˜æ¢å¾—åˆ°çš„å‰æ®µä¸åç«¯å…±è½­å½¢å¼æ•°æ®å¯¹åº”çš„æ»¤æ³¢å™¨
+%ä¸‡æ°¸é©ï¼Œ2012ï¼Œç¬¬429é¡µï¼‰
 for ii=1:n1/2
     h1_wave1(ii)=h_wave1(ii);
     h1_wave1(n1-ii+1)=conj(h1_wave1(ii));
@@ -61,23 +61,23 @@ end
 figure(3)
 plot(f_wave1,abs(h1_wave1))
 axis([0 100 0 1.1])
-%----ÆµÂÊÓòÂË²¨
+%----é¢‘ç‡åŸŸæ»¤æ³¢
 for i=1:n1
 fft_ywave1(i)=fft_wave1(i)*h1_wave1(i);
 end
 ywave1=ifft(fft_ywave1)
 figure(4)
 plot(t1,ywave1)
-xlabel('Ê±¼ä/s')
+xlabel('æ—¶é—´/s')
 ylabel('count')
 figure(5)
 loglog(f_wave1(1:n1/2),abs(fft_wave1(1:n1/2)))
-title('ÂË²¨Ç°')
-xlabel('ÆµÂÊ/Hz')
-ylabel('Æ×Õñ·ù')
+title('æ»¤æ³¢å‰')
+xlabel('é¢‘ç‡/Hz')
+ylabel('è°±æŒ¯å¹…')
 figure(6)
 loglog(f_wave1(1:n1/2),abs(fft_ywave1(1:n1/2)))
-title('ÂË²¨ºó')
-xlabel('ÆµÂÊ/Hz')
-ylabel('Æ×Õñ·ù')
+title('æ»¤æ³¢å')
+xlabel('é¢‘ç‡/Hz')
+ylabel('è°±æŒ¯å¹…')
 

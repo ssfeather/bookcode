@@ -1,7 +1,7 @@
 %利用模拟滤波器在频率域进行滤波
 %滤波器示例：二阶高通巴特沃斯滤波器
 %截止频率为1Hz。
-clearvars
+clearvars;
 filOrd  = 2;                                % 二阶
 cutFre  = 1*2*pi;                           % 截止频率1Hz
 %% 计算巴特沃斯二阶滤波器幅频特性
@@ -54,10 +54,10 @@ end
 %--频率域滤波
 filWav = zeros(1,datLen);
 for i=1:datLen
-    filWav(i)=fftWav(i)*conWav(i);
+    filWav(i)=fftWav(i)*conWav(i);          % 在频率域进行滤波
 end
 
-ifilWav=real(ifft(filWav));
+ifilWav=real(ifft(filWav));                 % 逆向快速傅里叶变换，得到滤波后波形
 
 %--绘图---------------------------------------------------------------------
 scrsz = get(groot,'ScreenSize');

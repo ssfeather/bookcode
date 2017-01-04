@@ -29,29 +29,28 @@ grid on
 ylabel('相位/°')
 xlabel('频率/Hz')
 
-%% 使用模拟滤波器在频率域对伊朗-巴基斯坦交界地震进行滤波
-% 读入示例地震波形：巴楚地震台CTS-1垂直向记录2013年4月16日伊朗-巴基斯坦交界M7.7地震
+%构建与傅里叶变换得到的前段与后端共轭形式数据对应的滤波器
+%万永革，2012，第429页）
 Fs        = 100;                            % 采用率
 datLen    = 60000;                          % 数据长度
-wavDat    = load('XX_BCH_BHZ_2.txt');
-wavDat    = wavDat(1:datLen);
-
-fftWav    = fft(wavDat);                    % 计算傅里叶向量
 freWav    = (1:datLen)*2*pi*Fs/datLen;      % 计算频率向量
 resWav    = freqs(b,a,freWav);              % 计算模拟滤波器的频率响应
 %???频率除以2pi是什么???
 afreWav   = freWav/(2*pi);                  
-
 hzLen     = (1:datLen)/Fs; 
 conWav    = zeros(1,datLen);
-%构建与傅里叶变换得到的前段与后端共轭形式数据对应的滤波器
-%万永革，2012，第429页）
 for i=1:datLen/2
     conWav(i)=resWav(i);
     conWav(datLen-i+1)=conj(conWav(i));
 end
 
 %--频率域滤波
+%% 使用模拟滤波器在频率域对伊朗-巴基斯坦交界地震进行滤波
+% 读入示例地震波形：巴楚地震台CTS-1垂直向记录2013年4月16日伊朗-巴基斯坦交界M7.7地震
+wavDat    = load('XX_BCH_BHZ_2.txt');
+wavDat    = wavDat(1:datLen);
+fftWav    = fft(wavDat);                    % 计算傅里叶向量
+
 filWav = zeros(1,datLen);
 for i=1:datLen
     filWav(i)=fftWav(i)*conWav(i);          % 在频率域进行滤波

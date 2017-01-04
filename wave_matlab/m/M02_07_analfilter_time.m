@@ -31,12 +31,12 @@ xlabel('频率/Hz')
 %% 构建与傅里叶变换得到的前段与后端共轭形式数据对应的滤波器
 %万永革，2012，第429页）
 %构造脉冲响应
-Fs      = 100;
-datLen  = 60000;
-hzLen   = (1:datLen)/Fs;
-freWav  = (1:datLen)*2*pi*Fs/datLen;
+Fs      = 100;                              % 采用率
+datLen  = 60000;                            % 数据长度
+freWav  = (1:datLen)*2*pi*Fs/datLen;        % 计算频率向量
+resWav  = freqs(b,a,freWav);                % 计算模拟滤波器的频率响应
 afreWav = freWav/(2*pi);
-resWav  = freqs(b,a,freWav);
+hzLen   = (1:datLen)/Fs;  
 conWav  = zeros(1,datLen);
 for i=1:datLen/2
     conWav(i) = resWav(i);
@@ -66,8 +66,8 @@ xlabel('时间/s')
 wavDat  = load('XX_BCH_BHZ_2.txt');
 wavDat  = wavDat(1:datLen);
 %式（2.71）
-timWav = zeros(1,datLen);
-impules=2*Fs;
+timWav  = zeros(1,datLen);
+impules = 2*Fs;
 for i=1:datLen
    if i<impules+1
        for j=1:i
@@ -80,6 +80,9 @@ for i=1:datLen
             end
         end
 end
+
+fftWav1 = fft(wavDat);
+fftWav2 = fft(timWav);
 
 %???书中P39页图2.21上下两组图一样???
 %--绘图---------------------------------------------------------------------
@@ -97,15 +100,13 @@ xlabel('时间/s')
 ylabel('count')
 
 subplot(2,2,2)
-fft_wave1=fft(wavDat);
-loglog(afreWav(1:datLen/2),abs(fft_wave1(1:datLen/2)))
+loglog(afreWav(1:datLen/2),abs(fftWav1(1:datLen/2)))
 title('滤波前')
 xlabel('频率/Hz')
 ylabel('谱振幅')
 
 subplot(2,2,4)
-fft_ywave1=fft(timWav);
-loglog(afreWav(1:datLen/2),abs(fft_ywave1(1:datLen/2)))
+loglog(afreWav(1:datLen/2),abs(fftWav2(1:datLen/2)))
 title('滤波后')
 xlabel('频率/Hz')
 ylabel('谱振幅')

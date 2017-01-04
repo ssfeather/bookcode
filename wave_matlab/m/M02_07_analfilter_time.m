@@ -4,8 +4,8 @@
 %截止频率为1Hz。
 clearvars;
 
-filOrd      = 2;                               % 二阶
-cutFre      = 1*2*pi;                          % 截止频率1Hz
+filOrd  = 2;                                   % 二阶
+cutFre  = 1*2*pi;                              % 截止频率1Hz
 [z,p,k] = butter(filOrd,cutFre,'high','s');    % 计算巴特沃斯低通滤波器幅频特性将
 [b,a]   = zp2tf(z,p,k);                        % 系统函数的零极点转化为系统函数一
                                                % 般形式的系数，z为零点的值，p为极

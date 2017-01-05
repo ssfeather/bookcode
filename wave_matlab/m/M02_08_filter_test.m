@@ -114,12 +114,13 @@ for j=1:maxLen
 end
 filStaf(j)=filStaf(j)/filCoea(1);
 
-figure('Name','按公式（2.97）计算滤波器最终状态')    
+figure('Name','按公式（2.97）计算滤波器最终状态')
 %计算出滤波器最终状态
 set(plot(filStaf),'LineWidth',3,'LineStyle','-','Color',[1 0 0]);
 hold on        
 %用filter函数得到的结果一致
 set(plot(filSta),'LineWidth',1,'LineStyle','-','Color',[0 0 1]);
+title('按公式（2.97）与使用filter函数计算滤波器最终状态的比较')
 
 %% 利用滤波器最终状态作为下一段信号滤波的初始状态
 nulLen      = 300;

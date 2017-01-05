@@ -1,226 +1,243 @@
 %FIR滤波器试验（1.4.7.3节，生成图1.15-1.22，以及图1.11b、1.13b）
 %输入信号:采样率为200sps的阶跃信号
-clear
+clearvars;
 
-%线性相位滤波器
-load M02_firln02.h
-fir_temp=M02_firln02;
-rate=fir_temp(1)
-T=1/rate
-Nfir=fir_temp(2)     %滤波器系数长度
-for i=1:Nfir
-    firl(i)=fir_temp(i+2);
-end
+%% 
+% 线性相位滤波器
+orgDat     = load('M02_firln02.h');
+rate       = orgDat(1);
+period     = 1/rate;                    % 采样率
+firLen     = orgDat(2);                 % 滤波器系数长度
+lnfDat     = orgDat(3:length(orgDat));
+
 %生成假想输入信号
-Nzero=200;
-for i=1:Nzero
-    xstep(i)=0;
+noeLen = 200;
+xstep   = zeros(1,noeLen);
+nulLen = 300;
+for i=1:nulLen
+     xstep(noeLen+i)=sin(2*pi*10*i*period)+0.5*sin(2*pi*20*i*period+pi/2); %两个正弦信号叠加
 end
-None=300
-for i=1:None
-   % xstep(Nzero+i)=1;
-     xstep(Nzero+i)=sin(2*pi*10*i*T)+0.5*sin(2*pi*20*i*T+pi/2); %两个正弦信号叠加
-end
-N=length(xstep)
-%褶积滤波
-yl=zeros(1,N)
-for i=Nfir+1:N       
-    for j=1:Nfir
-        yl(i)=yl(i)+firl(j)*xstep(i-j+1);
+genLen = length(xstep);
+
+% 褶积滤波
+lnfFir = zeros(1,genLen);
+for i=firLen+1:genLen       
+    for j=1:firLen
+        lnfFir(i)=lnfFir(i)+lnfDat(j)*xstep(i-j+1);
     end
 end
 
-figure(1)
-
-subplot(2,1,1)
-plot(xstep)
-subplot(2,1,2)
-plot(yl)
-title('moving sum')
-%最小相位滤波器
-load M02_firm02.h
-fir_temp=M02_firm02;
-rate=fir_temp(1)
-T=1/rate
-Nfir=fir_temp(2)
-for i=1:Nfir
-    firm(i)=fir_temp(i+2);
-end
-N=length(xstep)
-for i=1:N
-    ym(i)=0;
-end
-for i=Nfir+1:N
-    for j=1:Nfir
-        ym(i)=ym(i)+firm(j)*xstep(i-j+1);
+% 最小相位滤波器
+orgDat      = load('M02_firm02.h');
+rate        = orgDat(1);
+period      = 1/rate;
+firLen      = orgDat(2);
+genLen      = length(xstep);
+mphFir      = zeros(1,genLen);
+mphDat      = orgDat(3:length(orgDat));
+for i=firLen+1:genLen
+    for j=1:firLen
+        mphFir(i)=mphFir(i)+mphDat(j)*xstep(i-j+1);
     end
 end
 
-figure(2)
-subplot(2,1,1)
+% 信号恢复
+cphCon = deconv(lnfFir,lnfDat);     % 线性相位
+mphCon = deconv(mphFir,mphDat);     % 最小相位
+
+scrsz = get(groot,'ScreenSize');
+figure('Position',[scrsz(3)/3 scrsz(4)/1.5 scrsz(3)/2 scrsz(4)/1.5]);
+subplot(5,1,1)
 plot(xstep)
-subplot(2,1,2)
-plot(ym)
-%信号恢复
-[q,r] = deconv(yl,firl);   %线性相位
-figure(3)
-subplot(2,1,1)
-plot(yl)
-subplot(2,1,2)
-plot(q)
-[q,r] = deconv(ym,firm);  %最小相位
-figure(4)
-subplot(2,1,1)
-plot(ym)
-subplot(2,1,2)
-plot(q)
-%用Matlab工具画响应曲线
-figure(5)
-freqz(firl,1)   %线性相位FIR
-figure(6)
-freqz(firm,1)  %最小相位FIR
-% 使用Matlab函数
-figure(7)
-[yl,zf0]=filter(firl,1,xstep);   %线性相位FIR滤波器
-zf0   %滤波器最终状态
-zf0l=length(zf0)
-subplot(2,1,1)
+title('假想输入信号')
+
+subplot(5,1,2)
+plot(lnfFir)
+title('褶积滤波')
+
+subplot(5,1,4)
+plot(mphFir)
+title('最小相位滤波')
+
+subplot(5,1,3)
+plot(cphCon)
+title('线性相位信号恢复')
+
+subplot(5,1,5)
+plot(mphCon)
+title('最小相位信号恢复')
+
+%% 用Matlab工具画响应曲线
+figure('Name','用Matlab工具画响应曲线')
+freqz(lnfDat,1)   %线性相位FIR
+title('线性相位FIR')
+figure('Name','用Matlab工具画响应曲线')
+freqz(mphDat,1)   %最小相位FIR
+title('最小相位FIR')
+
+%% 使用Matlab函数滤波
+scrsz = get(groot,'ScreenSize');
+figure('Name','使用Matlab函数滤波','Position',[scrsz(3)/3 scrsz(4)/1.5 scrsz(3)/2 scrsz(4)/1.5]);
+[lnfFir,filSta]=filter(lnfDat,1,xstep);   %FIR滤波器线性相位,zf0滤波器最终状态
+zf0l=length(filSta);
+tesFf=filtfilt(lnfDat,1,xstep);  %正反滤波
+
+subplot(2,2,1)
 plot(xstep)
-subplot(2,1,2)
-plot(yl)
+subplot(2,2,3)
+plot(lnfFir)
 title('filter')
-figure(8)
-yll=filtfilt(firl,1,xstep);%正反滤波
-
-subplot(2,1,1)
+subplot(2,2,2)
 plot(xstep)
-subplot(2,1,2)
-plot(yll)
+subplot(2,2,4)
+plot(tesFf)
 title('filtfilt')
-%按公式（2.97）计算滤波器最终状态zf
-b=firl;
-a=1;
-Nb=length(b)
-La=length(a)
-M=max(Nb,La)-1
-for m=1:M
-    zf(m)=0;
-    if m<Nb
-    for i=m:Nb-1
-        zf(m)=zf(m)+b(i+1)*xstep(N+m-i);
-    end
-    end
-    if La>1&m+1<La
-    for i=m+1:La-1
-        zf(m)=zf(m)+a(i+1)*y(N+m-i+1);
-    end
-    end
-    end
-    zf(m)=zf(m)/a(1);
-zfl=length(zf)
-zf
-figure(9)    
-plot(zf,'r');hold on   %计算出的zf
-plot(zf0,'b')              %用[y,zf0]=filter(b,a,x)得到的
-%结果一致
-%利用滤波器最终状态作为下一段信号滤波的初始状态
 
-N1one=300
-for i=1:N1one
-    %xstep1(i)=1;
-     xstep1(i)=sin(2*pi*10*i*T)+0.5*sin(2*pi*20*i*T+pi/2); %两个正弦信号叠加
+%% 按公式（2.97）计算滤波器最终状态
+filCoeb     = lnfDat;
+filCoea     = 1;
+coebLen     = length(filCoeb);
+coeaLen     = length(filCoea);
+maxLen      = max(coebLen,coeaLen)-1;
+filStaf     = zeros(1,maxLen);
+for j=1:maxLen
+    if j<coebLen
+        for i=j:coebLen-1
+            filStaf(j)=filStaf(j)+filCoeb(i+1)*xstep(genLen+j-i);
+        end
+    end
+    if coeaLen>1 && j+1<coeaLen
+        for i=j+1:coeaLen-1
+            filStaf(j)=filStaf(j)+filCoea(i+1)*y(genLen+j-i+1);
+        end
+    end
 end
-N1zero=200;
-for i=1:N1zero
-    xstep1(N1one+i)=0;
+filStaf(j)=filStaf(j)/filCoea(1);
+
+figure('Name','按公式（2.97）计算滤波器最终状态')    
+%计算出滤波器最终状态
+set(plot(filStaf),'LineWidth',3,'LineStyle','-','Color',[1 0 0]);
+hold on        
+%用filter函数得到的结果一致
+set(plot(filSta),'LineWidth',1,'LineStyle','-','Color',[0 0 1]);
+
+%% 利用滤波器最终状态作为下一段信号滤波的初始状态
+nulLen      = 300;
+noeLen      = 200;
+inDat       = zeros(1,nulLen);
+for i=1:nulLen
+     inDat(i)=sin(2*pi*10*i*period)+0.5*sin(2*pi*20*i*period+pi/2); %两个正弦信号叠加
 end
-N1=length(xstep1)
-N2=N+N1
-%两端信号连接
-x2(1:N)=xstep(1:N);
-x2(N+1:N2)=xstep1(1:N1);
-figure(10)
-plot(x2)
-[y2,zf2]=filter(b,a,x2); %两段合为一段滤波
-figure(11)
-plot(y2)
-figure(12)
-plot(zf2)
-%分两端滤波，第2段利用第1段的zf1
-[y21,zf1]=filter(b,a,xstep)
-[y22,zf2]=filter(b,a,xstep1,zf1) %第2段用第1段的zf作为zi
-y2(1:N)=y21(1:N);
-y2(N+1:N2)=y22(1:N1);
-figure(13)
-plot(y2)
+for i=1:noeLen
+    inDat(nulLen+i)=0;
+end
+datLen      = length(inDat);
+sumLen      = genLen+datLen;
+
+scrsz = get(groot,'ScreenSize');
+figure('Position',[scrsz(3)/3 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2]);
+%两段信号连接
+splDat(1:genLen)        = xstep(1:genLen);
+splDat(genLen+1:sumLen) = inDat(1:datLen);
+subplot(2,2,1)
+plot(splDat)
+title('两段信号连接')
+
+%两段合为一段滤波
+lnfFir2                 = filter(filCoeb,filCoea,splDat); 
+subplot(2,2,2)
+plot(lnfFir2)
+title('两段合为一段滤波')
+
+%分两段滤波，第2段利用第1段的zf1
+[lnfFir21,zf1]          = filter(filCoeb,filCoea,xstep);
+lnfFir22                = filter(filCoeb,filCoea,inDat,zf1); %第2段用第1段的滤波器状态作为初始状态
+lnfFir2(1:genLen)       = lnfFir21(1:genLen);
+lnfFir2(genLen+1:sumLen)= lnfFir22(1:datLen);
+subplot(2,2,3)
+plot(lnfFir2)
+title('第2段用第1段的滤波器状态为初始状态')
+
 %可以看到图13与图11一致
-[y22,zf2]=filter(b,a,xstep1)  %第2段不用第1段的zf作为zi
-y2(N+1:N2)=y22(1:N1);
-figure(14)
-plot(y2)   %结果两段的输出不能衔接
-% 按式（2.98）计算第1段的zf，作为第2段的zi，按式（2.99）计算第2段的滤波输出
-%按公式（2.98）计算滤波器最终状态zf
-b=firl;
-a=1;
-Nb=length(b)
-La=length(a)
-M=max(Nb,La)-1
-for m=1:M
-    zf(m)=0;
-    if m<Nb
-    for i=m:Nb-1
-        zf(m)=zf(m)+b(i+1)*xstep(N+m-i);
+[lnfFir22,filSta2]=filter(filCoeb,filCoea,inDat);  %第2段不用第1段的滤波器状态作为初始状态
+lnfFir2(genLen+1:sumLen)=lnfFir22(1:datLen);
+subplot(2,2,4)
+plot(lnfFir2)   
+title('第2段不用第1段的滤波器状态为初始状态')
+%结果两段的输出不能衔接
+
+%% 按式（2.98）计算第1段滤波器最终状态，作为第2段滤波器初始状态，按式（2.99）计算第2段的滤波输出
+%按公式（2.98）计算滤波器最终状态
+filcoe      = lnfDat;
+filCoea     = 1;
+coebLen     = length(filcoe);
+coeaLen     = length(filCoea);
+maxLen      = max(coebLen,coeaLen)-1;
+for j=1:maxLen
+    filStaf(j)=0;
+    if j<coebLen
+        for i=j:coebLen-1
+            filStaf(j)=filStaf(j)+filcoe(i+1)*xstep(genLen+j-i);
+        end
     end
+    if coeaLen>1 && j+1<coeaLen
+        for i=j+1:coeaLen-1
+            filStaf(j)=filStaf(j)+filCoea(i+1)*y(genLen+j-i+1);
+        end
     end
-    if La>1&m+1<La
-    for i=m+1:La-1
-        zf(m)=zf(m)+a(i+1)*y(N+m-i+1);
-    end
-    end
-    end
-    zf(m)=zf(m)/a(1);
-zfl=length(zf)
-zf
-figure(15)    
-plot(zf,'r');hold on   %计算出的zf
+end
+filStaf(j)      = filStaf(j)/filCoea(1);
+
+scrsz = get(groot,'ScreenSize');
+figure('Position',[scrsz(3)/3 scrsz(4)/2 scrsz(3)/3 scrsz(4)/1.5]);
+
+subplot(4,1,1)
+plot(filStaf,'r');  %计算出滤波器最终状态
+title('第1段滤波器最终状态')
+
 % 式（2.99）
-for k=1:M
-    y1(k)=0;
-    N11=min(k,Nb-1)
-    if N11>0
-    for i=1:N11
-        y1(k)=y1(k)+b(i)*xstep1(k-i+1);
+filDat2 = zeros(1,maxLen);
+for k=1:maxLen
+    filDat2(k)=0;
+    minLen=min(k,coebLen-1);
+    if minLen>0
+        for i=1:minLen
+            filDat2(k)=filDat2(k)+filcoe(i)*inDat(k-i+1);
+        end
     end
+    cminLen=min(k,coeaLen-1);
+    if cminLen>1
+        for i=2:cminLen
+            filDat2(k)=filDat2(k)-filCoea(i)*filDat2(k-i+2);
+        end
     end
-    L11=min(k,La-1)
-    if L11>1
-    for i=2:L11
-        y1(k)=y1(k)-a(i)*y1(k-i+2);
+    filDat2(k)=filDat2(k)/filCoea(1);
+    filDat2(k)=filDat2(k)+filStaf(k);
+end
+     
+for i=maxLen+1:datLen      
+    filDat2(i)=0;
+    for j=1:coebLen
+        filDat2(i)=filDat2(i)+filcoe(j)*inDat(i-j+1);
     end
+    if coeaLen>1
+        for j=2:coeaLen
+            filDat2(i)=filDat2(i)-filCoea(j)*filDat2(i-j+1);
+        end
     end
-    y1(k)=y1(k)/a(1);
-            y1(k)=y1(k)+zf(k);
-     end
-    figure(16)
-  N1
-    for i=M+1:N1      
-        y1(i)=0;
-    for j=1:Nb
-        y1(i)=y1(i)+b(j)*xstep1(i-j+1);
-    end
-    if La>1
-    for j=2:La
-        y1(i)=y1(i)-a(j)*y1(i-j+1);
-    end
-    end
-    y1(i)=y1(i)/a(1);
-    end
-    subplot(2,1,1)
-plot(xstep1,'r');%第2段输入信号
-subplot(2,1,2)
-    plot(y1)   %第2段输出的滤波后信号,利用了第1段的滤波器最终状态
+    filDat2(i)=filDat2(i)/filCoea(1);
+end
+    
+subplot(4,1,2)
+plot(inDat,'r');%第2段输入信号
+title('第2段输入信号')
+subplot(4,1,3)
+plot(filDat2)   %第2段输出的滤波后信号,利用了第1段的滤波器最终状态
+title('利用第1段的滤波器最终状态,滤波后的第2段信号')
+
 %两段连接
-y2(N+1:N2)=y1(1:N1);
-figure(17)
-plot(y2)
+lnfFir2(genLen+1:sumLen)=filDat2(1:datLen);
+subplot(4,1,4)
+plot(lnfFir2)
+title('连接后的滤波数据')
 %连接成功

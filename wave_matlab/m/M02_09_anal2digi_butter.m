@@ -1,6 +1,5 @@
 %M02_10_anal2digi_butter.m
-%
-clear all
+clearvars
 fs=100  %采样率
 k=1       %增益
 f0=1 %截止频率
@@ -118,7 +117,7 @@ loglog(w/(2*pi),abs(h),'g')
 legend('双线性变换','脉冲响应不变','模拟滤波器')
 xlabel('频率/Hz')
 ylabel('归一化振幅')
-title({'低通滤波器振幅响应，截止频率=',fc,'Hz'})
+title('低通滤波器振幅响应，截止频率 = 1Hz')
 %有限差分近似
 r2=sqrt(2)
 f0=1

@@ -2,8 +2,7 @@
 %输入信号:采样率为200sps的阶跃信号
 clearvars;
 
-%% 
-% 线性相位滤波器
+%% 线性相位滤波器
 orgDat     = load('M02_firln02.h');
 rate       = orgDat(1);
 period     = 1/rate;                    % 采样率
